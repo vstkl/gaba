@@ -24,11 +24,15 @@
             ]
         },
         {
-            "type": "chrome",
+            "name": "Frontend",
+            "type": "pwa-chrome",
             "request": "launch",
-            "name": "Run Frontend",
-            "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}"
-          }
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/src",
+            "sourceMapPathOverrides": {
+              "webpack:///src/*": "${webRoot}/*"
+            }
+        }
+         
     ]
 }
