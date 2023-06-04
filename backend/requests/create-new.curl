@@ -1,0 +1,4 @@
+curl -X POST -H "Content-Type: application/json" -d '{
+  "location": "Eiffel Tower",
+  "stories": ["Amazing view!", "Historical landmark"]
+}' http://localhost:3000/qr-codes
