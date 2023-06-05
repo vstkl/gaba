@@ -1,24 +1,29 @@
-version: '3'
+version: '3.8'
 services:
-  backend:
-    build:
-      context: ./backend
-    ports:
-      - 3000:3000
-    depends_on:
-      - database
   frontend:
     build:
-      context: ./frontend
+      context: frontend
+      dockerfile: Dockerfile
     ports:
-      - 3001:3001
+      - 80:80
     depends_on:
       - backend
-  database:
-    image: mysql:latest
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: hesl0kl3slo
-      MYSQL_DATABASE: qr_code_service
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
     ports:
-      - 3306:3306
+      - 3001:3001
+    environment:
+      - API_URL=http://backend:3001
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+  db:
+    build:
+      context: db
+      dockerfile: Dockerfile
+    ports:
+      - 3305:3305
+    restart: always

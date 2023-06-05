@@ -1,21 +1,20 @@
-# Use the official Node.js image as the base image
-FROM node:14-alpine
+# Use the official Node.js image as the base
+FROM node:14
 
 # Set the working directory in the container
 WORKDIR /backend
 
-# Copy the package.json and package-lock.json files to the container
-COPY package*.json ./
-COPY tsconfig.json ./
+# Copy package.json and package-lock.json to the container
+COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
 # Copy the source code to the container
-COPY src ./src
+COPY . .
 
-# Build the TypeScript code
-RUN npm run build
+# Expose port 3001
+EXPOSE 3001
 
-# Set the command to run the server
-CMD ["node", "dist/server.js"]
+# Start the backend server
+CMD ["npm", "start"]

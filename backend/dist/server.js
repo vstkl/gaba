@@ -12,7 +12,7 @@ const allowedOrigins = ['http://localhost:3001'];
 app.use((0, cors_1.default)({
     origin: allowedOrigins
 }));
-const port = process.env.BACKEND_PORT || 3000;
+const port = 3000;
 // Create MySQL connection
 const db = mysql_1.default.createConnection({
     host: '127.0.0.1',

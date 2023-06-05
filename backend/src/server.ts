@@ -16,7 +16,7 @@ app.use(cors({
 }));
 
 
-const port = process.env.BACKEND_PORT || 3000;
+const port =  3000;
 
 // Create MySQL connection
 const db = mysql.createConnection({
