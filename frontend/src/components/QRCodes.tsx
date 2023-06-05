@@ -8,7 +8,7 @@ const QRCodes: React.FC = () => {
     const fetchData = async () => {
       try {
         const data = await fetchQRCodes();
-        setQRCodes(data);
+        return data;
       } catch (error) {
         console.error('Error fetching QR codes:', error);
       }
@@ -17,6 +17,20 @@ const QRCodes: React.FC = () => {
     fetchData();
   }, []);
 
+  const decodeBase64Image = (base64Image: string) => {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    if (!context) return null;
+
+    const image = new Image();
+    image.src = base64Image;
+
+    context.drawImage(image, 0, 0);
+
+    const dataUrl = canvas.toDataURL('image/png');
+    return dataUrl;
+  };
+
   return (
     <div>
       <h2>QR Codes</h2>
@@ -24,7 +38,7 @@ const QRCodes: React.FC = () => {
         {qrCodes.map((qrCode) => (
           <li key={qrCode.id}>
             <p>Location: {qrCode.location}</p>
-            <img src={qrCode.qrCode} alt="QR Code" />
+            <p>{decodeBase64Image(qrCode.image)}</p>
           </li>
         ))}
       </ul>
