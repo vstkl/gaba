@@ -23,7 +23,7 @@ const db = mysql.createConnection({
   host: '127.0.0.1',
   user: 'sammy',
   password: 'heslo',  database: 'qr_code_service',
-  port: 3306,
+  port: 3305,
 });
 
 // Connect to MySQL
