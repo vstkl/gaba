@@ -1,7 +1,8 @@
-CREATE USER 'sammy'@'localhost' IDENTIFIED WITH mysql_native_password BY 'heslo';
+CREATE USER 'sammy'@'db' IDENTIFIED BY 'heslo';
+ALTER USER 'root'@'db' IDENTIFIED WITH mysql_native_password BY 'P@55word';
 CREATE DATABASE qr_code_service;
 
-GRANT PRIVILEGE ON qr_code_service.*  TO 'sammy'@'localhost';
+GRANT PRIVILEGE ON qr_code_service.*  TO 'sammy'@'db';
 
 USE qr_code_service;
 

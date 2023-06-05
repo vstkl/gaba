@@ -6,15 +6,20 @@ WORKDIR /backend
 
 # Copy package.json and package-lock.json to the container
 COPY package.json package-lock.json ./
+COPY tsconfig.json ./
+
 
 # Install dependencies
-RUN npm ci
+RUN npm ci --only=production
 
 # Copy the source code to the container
 COPY . .
 
+RUN npm run build
+
 # Expose port 3001
-EXPOSE 3001
 
 # Start the backend server
 CMD ["npm", "start"]
+
+EXPOSE 3000

@@ -1,16 +1,24 @@
 # Use the official Node.js image as the base
 FROM mysql:latest
 
-EXPOSE 3306
 
-RUN chown -R mysql:root /var/lib/mysql/
 
-ENV MYSQL_DATABASE=qr_code_service
-ENV MYSQL_ROOT=sammy
-ENV MYSQL_PASSWORD=heslo
-ENV MYSQL_ROOT_PASSWORD=P@55word
+ARG MYSQL_DATABASE=qr_code_service
+ARG MYSQL_USER=sammy
+ARG MYSQL_ROOT=root
+ARG MYSQL_PASSWORD=heslo
+ARG MYSQL_ROOT_PASSWORD=P@55word
 
-ADD qr.sql /docker-entrypoint-initdb.d
+
+ENV MYSQL_DATABASE=${MYSQL_DATABASE}
+ENV MYSQL_ROOT=${MYSQL_ROOT}
+ENV MYSQL_USER=${MYSQL_USER}
+ENV MYSQL_PASSWORD=${MYSQL_ROOT_PASSWORD}
+ENV MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+
+ADD init.sql /docker-entrypoint-initdb.d
 
 
 CMD ["mysqld"]
+
+EXPOSE 3306

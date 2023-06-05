@@ -1,29 +1,66 @@
 version: '3.8'
+
+volumes:
+  db:
+    driver: local
+
+networks:
+  app-tier:
+    driver: bridge
+
 services:
-  frontend:
-    build:
-      context: frontend
-      dockerfile: Dockerfile
-    ports:
-      - 80:80
-    depends_on:
-      - backend
-  backend:
-    build:
-      context: backend
-      dockerfile: Dockerfile
-    ports:
-      - 3001:3001
-    environment:
-      - API_URL=http://backend:3001
-    volumes:
-      - ./backend:/app
-    depends_on:
-      - db
   db:
     build:
       context: db
       dockerfile: Dockerfile
     ports:
-      - 3305:3305
+      - "3306:3306"
+    expose:
+      - "3306"
     restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3306"]
+      interval: 3s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - db:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-tier  
+
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    expose:
+      - "3001"
+    depends_on:
+      - backend
+    networks:
+      - app-tier  
+
+
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    environment:
+      - API_URL="http://backend:3000"
+      - DB_URL="sql://db:3306"
+    volumes:
+      - ./backend:/backend
+    depends_on:
+      - db
+    links:
+      - db
+    networks:
+      - app-tier  

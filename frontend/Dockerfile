@@ -1,29 +1,22 @@
-# Use the official Node.js image as the base
-FROM node:14 as build
+# Base image
+FROM node:14-alpine
 
-# Set the working directory in the container
-WORKDIR /frontend
+# Set the working directory
+WORKDIR /app
 
-# Copy package.json and package-lock.json to the container
+# Copy package.json and package-lock.json to the working directory
 COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm ci
+RUN npm ci --only=production
 
-# Copy the source code to the container
+# Copy the rest of the source code to the working directory
 COPY . .
 
-# Build the frontend application
-RUN npm run build
+# Serve the built app using a lightweight HTTP server
+RUN npm install -g serve
+CMD ["serve", "-s", "build", "-l", "3001"]
 
-# Use Nginx as the server for serving the built files
-FROM nginx:alpine
+# Expose the port the app will run on
+EXPOSE 3001
 
-# Copy the built files from the previous stage to the Nginx server
-COPY --from=build /app/build /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-
-# Start Nginx server
-CMD ["npm", "start"]

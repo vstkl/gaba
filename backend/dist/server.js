@@ -8,16 +8,16 @@ const mysql_1 = __importDefault(require("mysql"));
 const qr_image_1 = __importDefault(require("qr-image"));
 const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
-const allowedOrigins = ['http://localhost:3001'];
+const allowedOrigins = ['http://frontend:3001'];
 app.use((0, cors_1.default)({
     origin: allowedOrigins
 }));
 const port = 3000;
 // Create MySQL connection
 const db = mysql_1.default.createConnection({
-    host: '127.0.0.1',
-    user: 'sammy',
-    password: 'heslo', database: 'qr_code_service',
+    host: 'db',
+    user: 'root',
+    password: 'P@55word', database: 'qr_code_service',
     port: 3306,
 });
 // Connect to MySQL

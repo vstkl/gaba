@@ -9,7 +9,7 @@ import cors from 'cors';
 
 const app = express();
 
-const allowedOrigins = ['http://localhost:3001'];
+const allowedOrigins = ['http://frontend:3001'];
 
 app.use(cors({
   origin: allowedOrigins
@@ -20,10 +20,10 @@ const port =  3000;
 
 // Create MySQL connection
 const db = mysql.createConnection({
-  host: '127.0.0.1',
-  user: 'sammy',
-  password: 'heslo',  database: 'qr_code_service',
-  port: 3305,
+  host: 'db',
+  user: 'root',
+  password: 'P@55word',  database: 'qr_code_service',
+  port: 3306,
 });
 
 // Connect to MySQL
